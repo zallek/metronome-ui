@@ -1,6 +1,5 @@
 import { createStyles, withStyles, WithStyles } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
-import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import Tooltip from '@material-ui/core/Tooltip'
 import { WhiteSpaceProperty } from 'csstype'
 import * as React from 'react'
@@ -12,10 +11,10 @@ const elipsis = {
   whiteSpace: 'nowrap' as WhiteSpaceProperty
 }
 
-const styles = ({ palette }: Theme) => createStyles({
+const styles = createStyles({
   appId: {
     padding: 4,
-    width: 150,
+    width: 100,
     ...elipsis
   },
   avatar: {
@@ -31,21 +30,42 @@ const styles = ({ palette }: Theme) => createStyles({
     padding: 2
   },
   root: {
-    backgroundColor: palette.background.paper,
     fontSize: '12px',
-    maxWidth: 360
+    maxWidth: 420
   },
   sessionId: {
+    flexGrow: 0,
+    flexShrink: 0,
     padding: 4,
-    width: 200,
+    width: 60,
     ...elipsis
   },
-  uniqueId: {
+  timestamp: {
     padding: 4,
-    width: 200,
+    width: 180
+  },
+  uniqueId: {
+    flexGrow: 0,
+    flexShrink: 0,
+    padding: 4,
+    width: 60,
     ...elipsis
   }
 })
+
+const ShortUUID = ({ uuid }: IShortUUIDProps) => {
+  const splits = uuid.split('-')
+  const shorten = splits.length === 5 ? splits[0] : null
+  return (
+    <Tooltip title={uuid}>
+      <span>{shorten || '<invalid>'}</span>
+    </Tooltip>
+  )
+}
+
+interface IShortUUIDProps {
+  uuid: string
+}
 
 const EventList = ({ classes, events }: IEventListProps) =>
   <div className={classes.root}>
@@ -57,10 +77,10 @@ const EventList = ({ classes, events }: IEventListProps) =>
               <Avatar className={classes.avatar} style={{ backgroundColor: event.color }}>{event.initiales}</Avatar>
             </Tooltip>
           </div>
-          <div>{event.timestamp}</div>
+          <div className={classes.timestamp}>{event.timestamp.slice(0, -5)}</div>
           <div className={classes.appId}>{event.appId}</div>
-          <div className={classes.uniqueId}>{event.uniqueId}</div>
-          <div className={classes.sessionId}>{event.sessionId}</div>
+          <div className={classes.uniqueId}><ShortUUID uuid={event.uniqueId} /></div>
+          <div className={classes.sessionId}><ShortUUID uuid={event.sessionId} /></div>
         </div>
       )}
     </div>

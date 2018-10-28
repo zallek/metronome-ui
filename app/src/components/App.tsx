@@ -1,3 +1,5 @@
+import { createStyles, withStyles, WithStyles } from '@material-ui/core'
+import Paper from '@material-ui/core/Paper'
 import ColorHash from 'color-hash'
 import * as React from 'react'
 import events from '../data/events'
@@ -20,15 +22,41 @@ function enhanceEvent(event: IEvent): IEnhancedEvent {
   return { ...event, shortName, initiales, color }
 }
 
-class App extends React.Component {
+const styles = createStyles({
+  content: {
+    display: 'flex',
+    padding: 12
+  },
+  leftPanel: {
+    flexGrow: 1,
+    marginRight: 12
+  },
+  rightPanel: {
+    flexGrow: 0,
+    padding: 4,
+    width: 420
+  }
+})
+
+class App extends React.Component<IAppProps> {
   public render() {
+    const { classes } = this.props
     return (
-      <div className="App">
+      <div>
         <TopBar />
-        <EventList events={eEvents} />
+        <div className={classes.content}>
+          <Paper className={classes.leftPanel}/>
+          <Paper className={classes.rightPanel}>
+            <EventList events={eEvents} />
+          </Paper>
+        </div>
       </div>
     );
   }
 }
 
-export default App
+interface IAppProps extends WithStyles<typeof styles>{
+
+}
+
+export default withStyles(styles)(App)
