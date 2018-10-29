@@ -18,3 +18,8 @@ declare module '*data/events' {
   const content: IEvent[]
   export default content
 }
+
+declare module '*data/consumers' {
+  const content: Map<string, string[]>
+  export default content
+}
