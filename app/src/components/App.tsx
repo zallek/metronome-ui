@@ -7,7 +7,7 @@ import { IEnhancedEvent, IEvent } from '../types/Event'
 import EventList from './EventList'
 import TopBar from './TopBar'
 
-const colorHash = new ColorHash();
+const colorHash = new ColorHash()
 
 const eEvents: IEnhancedEvent[] = events.map(enhanceEvent)
 

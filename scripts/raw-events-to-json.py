@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import json, io
 
 inputFile = io.open('/tmp/metronome-ui/events.raw', 'r')
@@ -16,5 +18,5 @@ for line in inputFile:
     })
 
 
-outputFile = io.open('./app/src/data/events.json', 'w', encoding='utf-8') # TODO
+outputFile = io.open('./app/src/data/events.json', 'w', encoding='utf-8')
 outputFile.write(json.dumps(events, ensure_ascii=False))
