@@ -32,7 +32,7 @@ class App extends React.Component<IAppProps> {
         <TopBar />
         <div className={classes.content}>
           <Paper className={classes.leftPanel} >
-            <EventGraph events={eventsEdges} />
+            <EventGraph eventsEdges={eventsEdges} />
           </Paper>
           <Paper className={classes.rightPanel}>
             <EventList events={events} />

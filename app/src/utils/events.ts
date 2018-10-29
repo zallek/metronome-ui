@@ -38,7 +38,7 @@ function getEventEdges(): IEventEdge[] {
   const edges = new Map<string, IEventEdge>()
   events.forEach(event => {
     (consumersByEventName[event.name] || []).forEach((consumer: string) => {
-      const key = `${event.appId}#${consumer}`
+      const key = `${event.appId}#${consumer}#${event.name}`
       if (!edges.has(key)) {
         edges.set(key, { fromApp: event.appId, toApp: consumer, events: [] })
       }

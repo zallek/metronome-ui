@@ -6,16 +6,17 @@ import VisNetwork from './VisNetwork'
 const styles = createStyles({
 })
 
-const EventGraph = ({ events }: IEventGraphProps) => {
-  const nodes = _.uniq(_.flatten(events.map(e => [e.fromApp, e.toApp]))).map((app, i) => ({
+const EventGraph = ({ eventsEdges }: IEventGraphProps) => {
+  const nodes = _.uniq(_.flatten(eventsEdges.map(e => [e.fromApp, e.toApp]))).map((app, i) => ({
     // group: String(i),
     id: app,
     label: app
   }))
-  const edges = events.map(event => ({
-    from: event.fromApp,
-    to: event.toApp,
-    value: event.events.length
+  const edges = eventsEdges.map(edge => ({
+    color: { color: edge.events[0].color },
+    from: edge.fromApp,
+    to: edge.toApp,
+    value: edge.events.length
   }))
 
   const options = {
@@ -27,6 +28,9 @@ const EventGraph = ({ events }: IEventGraphProps) => {
         color: '#fff',
       },
       shape: 'dot'
+    },
+    physics: {
+      solver: 'forceAtlas2Based'
     }
   }
 
@@ -44,7 +48,7 @@ const EventGraph = ({ events }: IEventGraphProps) => {
 }
 
 interface IEventGraphProps extends WithStyles<typeof styles> {
-  events: IEventEdge[]
+  eventsEdges: IEventEdge[]
 }
 
 export default withStyles(styles)(EventGraph)
