@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Network from 'vis/lib/network/Network'
+import { Network } from 'vis'
 
 import 'vis/dist/vis.css'
 
@@ -11,7 +11,7 @@ class VisNetwork extends React.Component<IVisNetworkProps> {
   }
 
   private network: vis.Network
-  private networkNode: Node | null
+  private networkNode: HTMLElement
 
   public componentDidMount() {
     this.updateNetwork(this.props as IVisNetworkProps)
@@ -28,13 +28,14 @@ class VisNetwork extends React.Component<IVisNetworkProps> {
   }
 
   public render() {
-    const { style } = this.props
-
     return (
       <div
         className='VisNetwork'
-        ref={ref => { this.networkNode = ref }}
-        style={style}
+        ref={ref => { this.networkNode = ref as HTMLElement }}
+        style={{
+          height: 650,
+          width: '100%'
+        }}
       />
     )
   }
@@ -50,8 +51,7 @@ class VisNetwork extends React.Component<IVisNetworkProps> {
 interface IVisNetworkProps {
   nodes: vis.Node[]
   edges: vis.Edge[]
-  options: object,
-  style?: object
+  options: object
 }
 
 export default VisNetwork

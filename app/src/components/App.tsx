@@ -1,8 +1,8 @@
 import { createStyles, withStyles, WithStyles } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
-import ColorHash from 'color-hash'
 import * as React from 'react'
-import { events } from '../utils/events'
+import { events, eventsEdges } from '../utils/events'
+import EventGraph from './EventGraph'
 import EventList from './EventList'
 import TopBar from './TopBar'
 
@@ -22,6 +22,8 @@ const styles = createStyles({
   }
 })
 
+// console.log(eventsEdges) // tslint:disable-line
+
 class App extends React.Component<IAppProps> {
   public render() {
     const { classes } = this.props
@@ -29,7 +31,9 @@ class App extends React.Component<IAppProps> {
       <div>
         <TopBar />
         <div className={classes.content}>
-          <Paper className={classes.leftPanel}/>
+          <Paper className={classes.leftPanel} >
+            <EventGraph events={eventsEdges} />
+          </Paper>
           <Paper className={classes.rightPanel}>
             <EventList events={events} />
           </Paper>

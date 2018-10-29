@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip'
 import { WhiteSpaceProperty } from 'csstype'
 import * as React from 'react'
-import { IEnhancedEvent } from '../types/Event'
 
 const elipsis = {
   overflow: 'hidden',

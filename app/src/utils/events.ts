@@ -1,11 +1,18 @@
 import ColorHash from 'color-hash'
-import _ from 'lodash'
 import consumers from '../data/consumers'
 import baseEvents from '../data/events'
 
-export const events: IEnhancedEvent[] = baseEvents.map(enhanceEvent)
+export const events: IEnhancedEvent[] = baseEvents
+  .map(cleanupEvent)
+  .map(enhanceEvent)
 
-export const eventsEdges: IEventEdge[] = []
+export const eventsEdges: IEventEdge[] = getEventEdges()
+
+function cleanupEvent(event: IEvent): IEvent {
+  const lAppId = event.appId.toLowerCase()
+  const appId = lAppId.startsWith('cerberus-jaw') ? 'cerberus-jaw' : lAppId
+  return { ...event, appId }
+}
 
 function enhanceEvent(event: IEvent): IEnhancedEvent {
   const colorHash = new ColorHash()
@@ -16,28 +23,30 @@ function enhanceEvent(event: IEvent): IEnhancedEvent {
     .replace(/[^A-Z]/g, '')
     .slice(0, 4)
   const color = colorHash.hex(shortName)
-  return { ...event, shortName, initiales, color }
+  return { ...event, shortName, initiales, color}
 }
 
 function getEventEdges(): IEventEdge[] {
-  const consumersByEventName: object = _.reduce(consumers, (acc: object, eventNames: string[], consumer: string) => {
-    eventNames.forEach((eventName: string) => {
-      if (!acc[eventName]) { acc[eventName] = [] }
-      return { acc, [eventName]: [...acc[eventName], consumer]}
-    })
-    return acc
-  }, {})
-
-  const edges = new Map()
-  events.forEach(event => {
-    consumersByEventName[event.name].forEach((consumer: string) => {
-      const key = { fromApp: event.appId, toApp: consumer }
-      if (!edges.has(key)) {
-        edges.set(key, { ...key, events: [] })
-      }
-      edges.set(key, { ...edges.get(key), events: [...edges.get(key).events, event] })
+  const consumersByEventName = {}
+  Object.keys(consumers).forEach((consumer: string) => {
+    consumers[consumer].forEach((eventName: string) => {
+      if (!consumersByEventName[eventName]) { consumersByEventName[eventName] = [] }
+      consumersByEventName[eventName].push(consumer)
     })
   })
 
-  return edges.values()
+  const edges = new Map<string, IEventEdge>()
+  events.forEach(event => {
+    (consumersByEventName[event.name] || []).forEach((consumer: string) => {
+      const key = `${event.appId}#${consumer}`
+      if (!edges.has(key)) {
+        edges.set(key, { fromApp: event.appId, toApp: consumer, events: [] })
+      }
+      const value = edges.get(key) as IEventEdge
+      value.events.push(event)
+      edges.set(key, value)
+    })
+  })
+
+  return Array.from(edges.values())
 }

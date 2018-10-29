@@ -7,14 +7,15 @@ const styles = createStyles({
 })
 
 const EventGraph = ({ events }: IEventGraphProps) => {
-  const nodes = _.uniq(_.flatten(events.map(e => [e.fromApp, e.toApp]))).map(app => ({
+  const nodes = _.uniq(_.flatten(events.map(e => [e.fromApp, e.toApp]))).map((app, i) => ({
+    // group: String(i),
     id: app,
     label: app
   }))
   const edges = events.map(event => ({
     from: event.fromApp,
     to: event.toApp,
-    value: 1 // event.events.length
+    value: event.events.length
   }))
 
   const options = {
@@ -30,7 +31,9 @@ const EventGraph = ({ events }: IEventGraphProps) => {
   }
 
   return (
-    <div>
+    <div style={{
+      backgroundColor: '#222222'
+    }}>
       <VisNetwork
         nodes={nodes}
         edges={edges}
