@@ -1,6 +1,8 @@
 import { createStyles, withStyles, WithStyles } from '@material-ui/core'
 import * as _ from 'lodash'
 import * as React from 'react'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { updateFocus } from '../utils/navigation'
 import VisNetwork from './VisNetwork'
 
 const styles = createStyles({
@@ -9,7 +11,7 @@ const styles = createStyles({
   }
 })
 
-class EventGraph extends React.Component<IEventGraphProps> {
+class EventGraph extends React.Component<IEventGraphProps, IEventGraphState> {
   public state = {
     ...this.updateGraph()
   }
@@ -24,6 +26,9 @@ class EventGraph extends React.Component<IEventGraphProps> {
           nodes={nodes}
           edges={edges}
           options={options}
+          events={{
+            select: this.onSelectionChange
+          }}
         />
       </div>
     )
@@ -45,6 +50,7 @@ class EventGraph extends React.Component<IEventGraphProps> {
     const edges = eventsEdges.map(edge => ({
       color: { color: edge.events[0].color },
       from: edge.fromApp,
+      id: edge.id,
       to: edge.toApp,
       value: edge.events.length
     }))
@@ -66,10 +72,26 @@ class EventGraph extends React.Component<IEventGraphProps> {
 
     return { edges, nodes, options }
   }
+
+  private onSelectionChange = ({ edges, nodes }: VisNetworkEventClick) => {
+    const { history } = this.props
+
+    const newFocus = nodes.length > 0 ? { focusedNode: nodes[0] }
+      : edges.length > 0 ? { focusedEdge: edges[0] }
+      : null
+
+    updateFocus(history, newFocus)
+  }
 }
 
-interface IEventGraphProps extends WithStyles<typeof styles> {
+interface IEventGraphProps extends WithStyles<typeof styles>, RouteComponentProps {
   eventsEdges: IEventEdge[]
 }
 
-export default withStyles(styles)(EventGraph)
+interface IEventGraphState {
+  nodes: vis.Node[]
+  edges: vis.Edge[]
+  options: vis.Options
+}
+
+export default withRouter(withStyles(styles)(EventGraph))

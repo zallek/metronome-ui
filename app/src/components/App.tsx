@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import * as React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { events, eventsEdges } from '../models/events'
 import EventGraph from './EventGraph'
 import EventList from './EventList'
@@ -39,24 +40,26 @@ class App extends React.Component<IAppProps> {
     const { rightTabIdx } = this.state
     
     return (
-      <div>
-        <TopBar />
-        <div className={classes.content}>
-          <Paper className={classes.leftPanel} >
-            <EventGraph eventsEdges={eventsEdges} />
-          </Paper>
-          <Paper className={classes.rightPanel}>
-            <Tabs value={rightTabIdx} onChange={this.changeRightTab} fullWidth={true}>
-              <Tab label='Event list' />
-              <Tab label='Events by type' />
-            </Tabs>
-            <div className={classes.tabContainer}>
-              {rightTabIdx === 0 && <EventList events={events} />}
-              {rightTabIdx === 1 && <EventsByType events={events} />}
-            </div>
-          </Paper>
+      <Router>
+        <div>
+          <TopBar />
+          <div className={classes.content}>
+            <Paper className={classes.leftPanel} >
+              <EventGraph eventsEdges={eventsEdges} />
+            </Paper>
+            <Paper className={classes.rightPanel}>
+              <Tabs value={rightTabIdx} onChange={this.changeRightTab} fullWidth={true}>
+                <Tab label='Event list' />
+                <Tab label='Events by type' />
+              </Tabs>
+              <div className={classes.tabContainer}>
+                {rightTabIdx === 0 && <EventList events={events} />}
+                {rightTabIdx === 1 && <EventsByType events={events} />}
+              </div>
+            </Paper>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 

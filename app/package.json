@@ -7,8 +7,10 @@
     "@material-ui/icons": "^3.0.1",
     "color-hash": "^1.0.3",
     "lodash": "^4.17.11",
+    "query-string": "^6.2.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "react-router-dom": "^4.3.1",
     "react-scripts-ts": "3.1.0",
     "vis": "^4.21.0"
   },
@@ -19,12 +21,15 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
+    "@types/history": "^4.7.2",
     "@types/jest": "^23.3.8",
     "@types/lodash": "^4.14.117",
     "@types/material-ui": "^0.21.5",
     "@types/node": "^10.12.0",
+    "@types/query-string": "^6.1.1",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
+    "@types/react-router-dom": "^4.3.1",
     "@types/vis": "^4.21.8",
     "typescript": "^3.1.3"
   }

@@ -14,7 +14,7 @@ class VisNetwork extends React.Component<IVisNetworkProps> {
   private networkNode: HTMLElement
 
   public componentDidMount() {
-    this.updateNetwork(this.props as IVisNetworkProps)
+    this.updateNetwork(this.props)
   }
 
   public componentWillReceiveProps(nextProps: IVisNetworkProps) {
@@ -41,17 +41,20 @@ class VisNetwork extends React.Component<IVisNetworkProps> {
   }
 
   private updateNetwork(props: IVisNetworkProps) {
-    const { nodes, edges, options } = props
+    const { nodes, edges, events, options } = props
 
     this.network = new Network(this.networkNode, { edges, nodes }, options)
     this.network.setOptions(options)
+
+    Object.keys(events).forEach((eventName: vis.NetworkEvents) => this.network.on(eventName, events[eventName]))
   }
 }
 
 interface IVisNetworkProps {
   nodes: vis.Node[]
   edges: vis.Edge[]
-  options: object
+  options: vis.Options
+  events: object
 }
 
 export default VisNetwork

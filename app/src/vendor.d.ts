@@ -23,3 +23,8 @@ declare module '*data/consumers' {
   const content: Map<string, string[]>
   export default content
 }
+
+declare interface VisNetworkEventClick {
+  nodes: string[]
+  edges: string[]
+}
