@@ -40,7 +40,7 @@ const EventList = ({ classes, events, max = 20 }: IEventListProps) =>
         <TableCell>Unique ID</TableCell>
         <TableCell>Type</TableCell>
         <TableCell>Timestamp</TableCell>
-        <TableCell>App ID</TableCell>
+        <TableCell>Producer</TableCell>
         <TableCell>Session ID</TableCell>
       </TableRow>
     </TableHead>

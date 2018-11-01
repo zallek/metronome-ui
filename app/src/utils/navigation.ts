@@ -11,3 +11,10 @@ export function updateFocus(history: History.History, newFocus: IEventFocus): vo
   const url = '/?' + encodeUrl(newFocus)
   history.push(url)
 }
+
+export function getFocus(location: History.Location): IEventFocus {
+  const qs = queryString.parse(location.search)
+  if (qs.focusedNode) { return { focusedNode: qs.focusedNode as string } }
+  if (qs.focusedEdge) { return { focusedEdge: qs.focusedEdge as string } }
+  return null
+}

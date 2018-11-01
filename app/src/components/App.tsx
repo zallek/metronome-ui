@@ -3,8 +3,10 @@ import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import * as React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { events, eventsEdges } from '../models/events'
+import { RouteComponentProps } from 'react-router'
+import { eventsEdges, filteredEvents } from '../models/events'
+import { getFocus } from '../utils/navigation'
+import EventFocus from './EventFocus'
 import EventGraph from './EventGraph'
 import EventList from './EventList'
 import EventsByType from './EventsByType'
@@ -36,31 +38,33 @@ class App extends React.Component<IAppProps> {
   }
 
   public render() {
-    const { classes } = this.props
+    const { classes, location } = this.props
     const { rightTabIdx } = this.state
+
+    const focus = getFocus(location)
+    const fEvents = filteredEvents(focus)
     
     return (
-      <Router>
-        <div>
-          <TopBar />
-          <div className={classes.content}>
-            <Paper className={classes.leftPanel} >
-              <EventGraph eventsEdges={eventsEdges} />
-            </Paper>
-            <Paper className={classes.rightPanel}>
-              <Tabs value={rightTabIdx} onChange={this.changeRightTab} fullWidth={true}>
-                <Tab label='Event list' />
-                <Tab label='Events by type' />
-              </Tabs>
-              <div className={classes.tabContainer}>
-                {rightTabIdx === 0 && <EventList events={events} />}
-                {rightTabIdx === 1 && <EventsByType events={events} />}
-              </div>
-            </Paper>
-          </div>
+      <div>
+        <TopBar />
+        <div className={classes.content}>
+          <Paper className={classes.leftPanel} >
+            <EventGraph eventsEdges={eventsEdges} />
+          </Paper>
+          <Paper className={classes.rightPanel}>
+            <EventFocus focus={focus} />
+            <Tabs value={rightTabIdx} onChange={this.changeRightTab} fullWidth={true}>
+              <Tab label='Event list' />
+              <Tab label='Events by type' />
+            </Tabs>
+            <div className={classes.tabContainer}>
+              {rightTabIdx === 0 && <EventList events={fEvents} />}
+              {rightTabIdx === 1 && <EventsByType events={fEvents} />}
+            </div>
+          </Paper>
         </div>
-      </Router>
-    );
+      </div>
+    )
   }
 
   private changeRightTab = (e: React.ChangeEvent, idx: number) => {
@@ -68,7 +72,7 @@ class App extends React.Component<IAppProps> {
   }
 }
 
-interface IAppProps extends WithStyles<typeof styles>{
+interface IAppProps extends WithStyles<typeof styles>, RouteComponentProps {
 
 }
 

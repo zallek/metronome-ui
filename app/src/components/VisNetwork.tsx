@@ -50,11 +50,15 @@ class VisNetwork extends React.Component<IVisNetworkProps> {
   }
 }
 
+interface IVisNetworkEvents {
+  select: (params: VisNetworkEventClick) => void
+}
+
 interface IVisNetworkProps {
   nodes: vis.Node[]
   edges: vis.Edge[]
   options: vis.Options
-  events: object
+  events: IVisNetworkEvents
 }
 
 export default VisNetwork

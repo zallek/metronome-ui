@@ -14,8 +14,8 @@ declare interface IEnhancedEvent extends IEvent {
 
 declare interface IEventEdge {
   id: string,
-  fromApp: string
-  toApp: string
+  from: string
+  to: string
   events: IEnhancedEvent[]
 }
 
@@ -27,12 +27,12 @@ declare interface IEventFilter {
   toDate?: string
 }
 
-declare interface IEventNodeFocus {
+declare interface IEventFocusNode {
   focusedNode: string
 }
 
-declare interface IEventEdgeFocus {
+declare interface IEventFocusEdge {
   focusedEdge: string
 }
 
-declare type IEventFocus = IEventNodeFocus | IEventEdgeFocus | null
+declare type IEventFocus = IEventFocusNode | IEventFocusEdge | null

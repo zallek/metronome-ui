@@ -38,7 +38,7 @@ class EventGraph extends React.Component<IEventGraphProps, IEventGraphState> {
     const { eventsEdges } = this.props
 
     const nodes = _.chain(eventsEdges)
-      .map(e => [e.fromApp, e.toApp])
+      .map(e => [e.from, e.to])
       .flatten()
       .uniq()
       .map((app, i) => ({
@@ -49,9 +49,9 @@ class EventGraph extends React.Component<IEventGraphProps, IEventGraphState> {
       .value()
     const edges = eventsEdges.map(edge => ({
       color: { color: edge.events[0].color },
-      from: edge.fromApp,
+      from: edge.from,
       id: edge.id,
-      to: edge.toApp,
+      to: edge.to,
       value: edge.events.length
     }))
 
